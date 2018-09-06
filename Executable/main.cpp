@@ -60,7 +60,7 @@ int main( int argc, char *argv[] )
         return 200;
     }
 
-    auto strBaseDir = options [ "listen" ].as<std::string>();
+    auto strBaseDir = options [ "listen" ].as< std::string >();
 
     if( strBaseDir.empty() || strBaseDir == "nopath" )
     {
