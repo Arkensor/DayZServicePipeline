@@ -1,2 +1,4 @@
 Executable/.idea/
 Executable/cmake-build-debug/
+Enscript/.idea/
+*.iml
