@@ -13,7 +13,10 @@
 \**********************************************************************************************************************/
 #include "LibraryLoader.hpp"
 
-LibraryLoader::LibraryLoader()
+#include <filesystem>
+
+LibraryLoader::LibraryLoader( std::filesystem::path& libDir )
+    : m_libDir( libDir )
 {
 }
 
@@ -21,9 +24,8 @@ LibraryLoader::~LibraryLoader()
 {
 }
 
-void* LibraryLoader::LoadDynamicLibrary( char* pstrLibraryName )
+void* LibraryLoader::LoadDynamicLibrary( std::string strLibName )
 {
-    std::string strLibName = pstrLibraryName;
 #ifdef _MSC_VER
     if( !EndsWith( strLibName, ".dll" ) )
     {
@@ -36,19 +38,21 @@ void* LibraryLoader::LoadDynamicLibrary( char* pstrLibraryName )
     }
 #endif
 
+    std::string strFullPath = ( m_libDir / strLibName ).string();
+
 #ifdef _MSC_VER
-    return ( void* )LoadLibrary( strLibName.c_str() );
+    return ( void* )LoadLibrary( strFullPath.c_str() );
 #else
-    return dlopen( strLibName.c_str(), 1 );
+    return dlopen( strFullPath.c_str(), 1 );
 #endif
 
 }
-void* LibraryLoader::GetFunctionPointer( void* pLibrary, char* pstrFunctionName )
+void* LibraryLoader::GetFunctionPointer( void* pLibrary, std::string strFunctionName )
 {
 #ifdef _MSC_VER
-    return ( void* )GetProcAddress( ( HINSTANCE )pLibrary, pstrFunctionName );
+    return ( void* )GetProcAddress( ( HINSTANCE )pLibrary, strFunctionName.c_str() );
 #else
-    return dlsym( pLibrary, pstrFunctionName );
+    return dlsym( pLibrary, pstrFunctionName.c_str() );
 #endif
 }
 

@@ -15,6 +15,7 @@
 #define DAYZSERVICEPIPELINE_LIBRARYLOADER_HPP
 
 #include <string>
+#include <filesystem>
 
 #ifdef _MSC_VER
     #define NOMINMAX
@@ -27,15 +28,18 @@
 class LibraryLoader
 {
 public:
-    LibraryLoader();
+    LibraryLoader( std::filesystem::path& libDir );
     virtual ~LibraryLoader();
 
-    void* LoadDynamicLibrary( char* );
-    void* GetFunctionPointer( void*, char* );
+    void* LoadDynamicLibrary( std::string strLibName );
+    void* GetFunctionPointer( void*, std::string strFunctionName );
     bool FreeDynamicLLibrary( void* );
 
 protected:
     static bool EndsWith(const std::string& str, const std::string& suffix);
+
+protected:
+    std::filesystem::path m_libDir;
 };
 
 

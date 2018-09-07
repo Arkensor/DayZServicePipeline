@@ -155,7 +155,7 @@ class DayZServicePipeline
 
         while( !( FileExist( "$profile:.DayZServicePipeline/response" ) && !FileExist( "$profile:.DayZServicePipeline/.lock" ) ) )
         {
-//            if( timeout > 30 ) //Maximum timeout in seconds
+//            if( timeout > 30 ) //Maximum timeout in seconds //Todo enable this again and check if the sleep even works...
 //            {
 //                CleanupRequest();
 //                TryUnlock();

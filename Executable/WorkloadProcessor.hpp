@@ -17,16 +17,25 @@
 #include "Workload.hpp"
 #include "LibraryLoader.hpp"
 
+#include <filesystem>
+#include <map>
+
 class WorkloadProcessor
 {
 public:
-    WorkloadProcessor();
+    WorkloadProcessor( std::filesystem::path& libDir );
     virtual ~WorkloadProcessor();
 
     void Process( Workload* oWorkload );
 
 protected:
+    void* GetServiceInstance( std::string strServiceName );
+    void* GetServiceFunction( std::string& strServiceName, const char *strFunctionName );
+
+protected:
     LibraryLoader* m_poLoader;
+    std::map< std::string, void* > m_oLoadedServices;
+    std::map< std::string, std::map< std::string, void* > > m_oLoadedServiceFunctions;
 };
 
 

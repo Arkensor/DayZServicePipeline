@@ -34,6 +34,11 @@ int main( int argc, char *argv[] )
         "listen", "(Required) Directory path the pipe is located.", cxxopts::value<std::string>()
             ->default_value( "nopath" )
             ->implicit_value( "nopath" )
+    )
+    (
+        "libraries", "(Required) Directory where the service libraries are stored.", cxxopts::value<std::string>()
+            ->default_value( "nopath" )
+            ->implicit_value( "nopath" )
     );
 
     if ( argc < 2  )
@@ -68,9 +73,9 @@ int main( int argc, char *argv[] )
 
     auto baseDir = std::filesystem::path( options [ "listen" ].as< std::string >() );
 
-    if( baseDir.empty() || baseDir.string() == "nopath" )
+    if( baseDir.empty() || baseDir.string() == "nopath" || !std::filesystem::exists(baseDir) )
     {
-        std::cout << "[Error] No or incorrect path given" << std::endl;
+        std::cout << "[Error] No or incorrect path given." << std::endl;
         return -1;
     }
 
@@ -79,11 +84,19 @@ int main( int argc, char *argv[] )
         baseDir = std::filesystem::path( baseDir / ".DayZServicePipeline" );
     }
 
+    auto libDir = std::filesystem::path( options [ "libraries" ].as< std::string >() );
+
+    if( libDir.empty() || libDir.string() == "nopath" || !std::filesystem::exists(libDir) )
+    {
+        std::cout << "[Error] No or incorrect services library given." << std::endl;
+        return -1;
+    }
+
     std::cout << "DayZServicePipeline version 1.0 initialized." << std::endl;
 
     auto oPipeline = new ServicePipeline( baseDir );
     auto oWorkLoad = new Workload();
-    auto oProcessor = new WorkloadProcessor();
+    auto oProcessor = new WorkloadProcessor( libDir );
 
     bool bReturn = false;
 
