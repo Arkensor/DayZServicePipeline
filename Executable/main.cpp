@@ -17,6 +17,12 @@
 #include "ThirdParty/cxxopts/cxxopts.hpp"
 
 #include <iostream>
+#include <filesystem>
+
+bool EndsWith( const std::string& str, const std::string& suffix )
+{
+    return str.size() >= suffix.size() && 0 == str.compare(str.size()-suffix.size(), suffix.size(), suffix);
+}
 
 int main( int argc, char *argv[] )
 {
@@ -25,7 +31,7 @@ int main( int argc, char *argv[] )
     options.add_options()
     ( "help", "Print help, what did you expect?" )
     (
-        "listen", "(Required) Path to the server that the pipeline lists on.", cxxopts::value<std::string>()
+        "listen", "(Required) Directory path the pipe is located.", cxxopts::value<std::string>()
             ->default_value( "nopath" )
             ->implicit_value( "nopath" )
     );
@@ -60,17 +66,22 @@ int main( int argc, char *argv[] )
         return 200;
     }
 
-    auto strBaseDir = options [ "listen" ].as< std::string >();
+    auto baseDir = std::filesystem::path( options [ "listen" ].as< std::string >() );
 
-    if( strBaseDir.empty() || strBaseDir == "nopath" )
+    if( baseDir.empty() || baseDir.string() == "nopath" )
     {
         std::cout << "[Error] No or incorrect path given" << std::endl;
         return -1;
     }
 
+    if( baseDir.string().find( ".DayZServicePipeline" ) == std::string::npos )
+    {
+        baseDir = std::filesystem::path( baseDir / ".DayZServicePipeline" );
+    }
+
     std::cout << "DayZServicePipeline version 1.0 initialized." << std::endl;
 
-    auto oPipeline = new ServicePipeline( strBaseDir );
+    auto oPipeline = new ServicePipeline( baseDir );
     auto oWorkLoad = new Workload();
     auto oProcessor = new WorkloadProcessor();
 
@@ -79,13 +90,18 @@ int main( int argc, char *argv[] )
     while( !bReturn )
     {
         //Try to get a workload
-        oPipeline->TryGetWorkload( oWorkLoad );
+        if( oPipeline->TryGetWorkload( oWorkLoad ) )
+        {
+            //Pass workload to the processor.
+            oProcessor->Process( oWorkLoad );
 
-        //Pass workload to the processor.
-        oProcessor->Process( oWorkLoad );
+            oPipeline->TryWriteWorkloadResult( oWorkLoad );
 
-        //Clean workload for next use
-        oWorkLoad->clear();
+            //Clean workload for next use
+            oWorkLoad->clear();
+        }
+
+        Sleep( 10 );
     }
 
     return 0;

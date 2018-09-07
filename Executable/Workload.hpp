@@ -33,7 +33,7 @@ public:
     std::string m_strServiceName;
     std::string m_strFunctionName;
     std::vector< std::string > m_oFunctionArguments;
-    std::vector< std::string > m_oResults;
+    std::string m_strResult;
 };
 
 

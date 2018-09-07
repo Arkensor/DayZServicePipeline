@@ -16,6 +16,7 @@
 Workload::Workload()
     : m_strServiceName( "" )
     , m_strFunctionName( "" )
+    , m_strResult( "" )
 {
 }
 
@@ -39,5 +40,5 @@ void Workload::clear()
     m_strServiceName.clear();
     m_strFunctionName.clear();
     m_oFunctionArguments.clear();
-    m_oResults.clear();
+    m_strResult.clear();
 }

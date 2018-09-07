@@ -15,6 +15,7 @@
 #define DAYZSERVICEPIPELINE_WORKLOADPROCESSOR_HPP
 
 #include "Workload.hpp"
+#include "LibraryLoader.hpp"
 
 class WorkloadProcessor
 {
@@ -23,6 +24,9 @@ public:
     virtual ~WorkloadProcessor();
 
     void Process( Workload* oWorkload );
+
+protected:
+    LibraryLoader* m_poLoader;
 };
 
 

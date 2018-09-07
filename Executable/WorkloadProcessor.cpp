@@ -13,7 +13,10 @@
 \**********************************************************************************************************************/
 #include "WorkloadProcessor.hpp"
 
+#include <iostream>
+
 WorkloadProcessor::WorkloadProcessor()
+    : m_poLoader( new LibraryLoader() )
 {
 }
 
@@ -23,5 +26,11 @@ WorkloadProcessor::~WorkloadProcessor()
 
 void WorkloadProcessor::Process( Workload *oWorkload )
 {
-    oWorkload->m_oResults.emplace_back( "" );
+    std::cout << "m_strServiceName:" << oWorkload->m_strServiceName << std::endl;
+    std::cout << "m_strFunctionName:" << oWorkload->m_strFunctionName << std::endl;
+
+    for ( auto & m_oFunctionArgument : oWorkload->m_oFunctionArguments )
+        std::cout << "m_oFunctionArgument: " << m_oFunctionArgument << std::endl;
+
+    oWorkload->m_strResult = oWorkload->m_oFunctionArguments.front();
 }

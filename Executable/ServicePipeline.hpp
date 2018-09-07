@@ -13,23 +13,20 @@
 \**********************************************************************************************************************/
 #ifndef DAYZSERVICEPIPELINE_SERVICEPIPELINE_HPP
 #define DAYZSERVICEPIPELINE_SERVICEPIPELINE_HPP
-
 #include "Workload.hpp"
-#include "LibraryLoader.hpp"
+
+#include <filesystem>
 
 class ServicePipeline
 {
 public:
-    ServicePipeline( std::string& strBasePath );
+    ServicePipeline( std::filesystem::path & basePath );
     virtual ~ServicePipeline();
 
     bool TryGetWorkload( Workload* oWorkload );
-
+    bool TryWriteWorkloadResult( Workload* oWorkload );
 public:
-    std::string m_strBasePath;
-
-protected:
-    LibraryLoader* m_poLoader;
+    std::filesystem::path m_oBasePath;
 };
 
 
