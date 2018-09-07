@@ -52,7 +52,7 @@ void* LibraryLoader::GetFunctionPointer( void* pLibrary, std::string strFunction
 #ifdef _MSC_VER
     return ( void* )GetProcAddress( ( HINSTANCE )pLibrary, strFunctionName.c_str() );
 #else
-    return dlsym( pLibrary, pstrFunctionName.c_str() );
+    return dlsym( pLibrary, strFunctionName.c_str() );
 #endif
 }
 

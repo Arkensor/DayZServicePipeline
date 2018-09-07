@@ -18,7 +18,7 @@ void main()
     auto oTest = new TestRequest();
 
     auto request = new ServiceRequest< TestRequest, TestResult >( oTest );
-    auto result = request.SendToService( "TEST" );
+    auto result = request.SendToService( "DayZServicePipelineTest" );
 
     Print( "Result: " + result );
     Print( "Result: " + result.i );
