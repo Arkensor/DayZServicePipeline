@@ -25,6 +25,7 @@ public:
 
     bool TryGetWorkload( Workload* oWorkload );
     bool TryWriteWorkloadResult( Workload* oWorkload );
+
 public:
     std::filesystem::path m_oBasePath;
 };

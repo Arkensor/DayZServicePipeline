@@ -16,13 +16,12 @@
 #include <iostream>
 #include <filesystem>
 
-typedef void(__stdcall *DayZServiceCall)(char *output, int outputSize, const char *data);
-typedef void(__stdcall *DayZServiceVersion)(char *output, int outputSize, const char *data);
+typedef void( __stdcall *DayZServiceCall )   ( char *output, int outputSize, const char *data );
+typedef void( __stdcall *DayZServiceVersion )( char *output, int outputSize );
 
-typedef void(__stdcall *RVExtension)(char *output, int outputSize, const char *function);
-typedef void(__stdcall *RVExtensionVersion)(char *output, int outputSize);
-typedef void(__stdcall *RVExtensionArgs)(char *output, int outputSize, const char *function, const char **args, int argCnt);
-
+typedef void( __stdcall *RVExtension )       ( char *output, int outputSize, const char *function );
+typedef void( __stdcall *RVExtensionVersion )( char *output, int outputSize );
+typedef  int( __stdcall *RVExtensionArgs )   ( char *output, int outputSize, const char *function, const char **args, int argCnt );
 
 WorkloadProcessor::WorkloadProcessor( std::filesystem::path& libDir )
     : m_poLoader( new LibraryLoader( libDir ) )
@@ -35,28 +34,33 @@ WorkloadProcessor::~WorkloadProcessor()
 
 void WorkloadProcessor::Process( Workload *oWorkload )
 {
-    std::cout << "m_strServiceName:" << oWorkload->m_strServiceName << std::endl;
-    std::cout << "m_strFunctionName:" << oWorkload->m_strFunctionName << std::endl;
+//    std::cout << "m_strServiceName:" << oWorkload->m_strServiceName << std::endl;
+//    std::cout << "m_strFunctionName:" << oWorkload->m_strFunctionName << std::endl;
+//
+//    for ( auto & m_oFunctionArgument : oWorkload->m_oFunctionArguments )
+//        std::cout << "m_oFunctionArgument: " << m_oFunctionArgument << std::endl;
 
-    for ( auto & m_oFunctionArgument : oWorkload->m_oFunctionArguments )
-        std::cout << "m_oFunctionArgument: " << m_oFunctionArgument << std::endl;
-
-    auto func = reinterpret_cast< DayZServiceCall >( GetServiceFunction( oWorkload->m_strServiceName, "DayZServiceCall" ) );
-
-    if( func )
+    if( oWorkload->m_strFunctionName == "DayZServiceInterface" )
     {
-        const int bufferSize = 10 * 1024;
-        char buffer[ bufferSize ] = { 0 };
+        auto func = reinterpret_cast< DayZServiceCall >( GetServiceFunction( oWorkload->m_strServiceName, "DayZServiceCall" ) );
 
-        std::string data = "This is an input data test";
+        if( func )
+        {
+            const int bufferSize = 100 * 1024; //Output data size
+            char buffer[ bufferSize ] = { 0 };
 
-        func( buffer, bufferSize, data.c_str() );
+            func( buffer, bufferSize, oWorkload->m_oFunctionArguments.front().c_str() );
 
-        std::string result( buffer );
+            std::string result( buffer );
 
-        std::cout << "Result: " << result << std::endl;
+            std::cout << "Result: " << result << std::endl;
 
-        oWorkload->m_strResult = result;
+            oWorkload->m_strResult = result;
+        }
+    }
+    else
+    {
+        //Todo handle RVExtensions
     }
 }
 
@@ -68,6 +72,20 @@ void *WorkloadProcessor::GetServiceInstance( std::string strServiceName )
         auto pointer = m_poLoader->LoadDynamicLibrary( strServiceName );
 
         m_oLoadedServices[ strServiceName ] = pointer;
+
+        //First time calling the service -> give feedback to the user that it has been loaded
+        auto func = reinterpret_cast< DayZServiceVersion >( GetServiceFunction( strServiceName, "DayZServiceVersion" ) );
+        if( func )
+        {
+            const int bufferSize = 512; //Output data size
+            char buffer[ bufferSize ] = { 0 };
+
+            func( buffer, bufferSize );
+
+            std::string result( buffer );
+
+            std::cout << "[INFO] Service '" << strServiceName << "' version " << result << " loaded." << std::endl;
+        }
     }
 
     return m_oLoadedServices[ strServiceName ];

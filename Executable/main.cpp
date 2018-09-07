@@ -36,7 +36,7 @@ int main( int argc, char *argv[] )
             ->implicit_value( "nopath" )
     )
     (
-        "libraries", "(Required) Directory where the service libraries are stored.", cxxopts::value<std::string>()
+        "libraries", "(Required) Directory where the service libraries are stored.", cxxopts::value<std::string>() //Todo make this several dirs that are looked up. Either search paths, or full dll paths.
             ->default_value( "nopath" )
             ->implicit_value( "nopath" )
     );
@@ -100,7 +100,7 @@ int main( int argc, char *argv[] )
 
     bool bReturn = false;
 
-    while( !bReturn )
+    while( !bReturn ) //Todo exception / error handling for all cases
     {
         //Try to get a workload
         if( oPipeline->TryGetWorkload( oWorkLoad ) )

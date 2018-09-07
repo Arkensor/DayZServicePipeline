@@ -16,7 +16,6 @@
 #include <filesystem>
 #include <sstream>
 #include <fstream>
-#include <iostream>
 
 ServicePipeline::ServicePipeline( std::filesystem::path & basePath )
     : m_oBasePath( basePath )
@@ -39,12 +38,11 @@ bool ServicePipeline::TryGetWorkload( Workload* oWorkload )
 
         auto pos = strData.find( '^' );
 
-        if( pos != std::string::npos )
+        if( pos != std::string::npos ) //Todo add support for RVExtension calls - what info goes where and when to use args version or the old call?
         {
             oWorkload->m_strServiceName = strData.substr( 0, pos );
             oWorkload->m_strFunctionName = "DayZServiceInterface";
             oWorkload->m_oFunctionArguments.emplace_back( strData.substr( pos + 1 ) );
-
         }
 
         std::filesystem::remove( oRequestPath / "request" );
