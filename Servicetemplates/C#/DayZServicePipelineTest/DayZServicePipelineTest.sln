@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayZServicePipelineTest", "DayZServicePipelineTest\DayZServicePipelineTest.csproj", "{583CF51D-774E-4569-99F5-0D289F8D718F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Debug|x64.ActiveCfg = Debug|x64
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Debug|x64.Build.0 = Debug|x64
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Release|x64.ActiveCfg = Release|x64
+		{583CF51D-774E-4569-99F5-0D289F8D718F}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E8DC07B9-767C-4737-A7D8-7733A1B27F91}
+	EndGlobalSection
+EndGlobal

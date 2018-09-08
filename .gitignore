@@ -6,3 +6,7 @@ Executable/cmake-build-debug-x64/
 Executable/cmake-build-debug-x86/
 Executable/cmake-build-release-x64/
 Executable/cmake-build-release-x86/
+Servicetemplates/C#/DayZServicePipelineTest/.vs/
+Servicetemplates/C#/DayZServicePipelineTest/DayZServicePipelineTest/bin/
+Servicetemplates/C#/DayZServicePipelineTest/DayZServicePipelineTest/obj/
+Servicetemplates/C#/DayZServicePipelineTest/packages/

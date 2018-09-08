@@ -32,14 +32,14 @@ class ServiceRequest< Class InputType, Class OutputType >
 
     void ServiceRequest( InputType input )
     {
-        Print( "ServiceRequest::ServiceRequest()" );
+//        Print( "ServiceRequest::ServiceRequest()" );
 
         m_oInputData = input;
     }
 
     void ~ServiceRequest()
     {
-        Print( "ServiceRequest::~ServiceRequest()" );
+//        Print( "ServiceRequest::~ServiceRequest()" );
     }
 
     OutputType SendToService( string strServiceName )
@@ -75,6 +75,9 @@ class ServiceRequest< Class InputType, Class OutputType >
         }
 
         auto returnValue = GetPipeline().FetchResponse( ticket );
+
+        returnValue.Replace(":false", ":0");
+        returnValue.Replace(":true", ":1");
 
         Print( "returnValue: " + returnValue );
 

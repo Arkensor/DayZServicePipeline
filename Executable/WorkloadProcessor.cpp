@@ -53,7 +53,7 @@ void WorkloadProcessor::Process( Workload *oWorkload )
 
             std::string result( buffer );
 
-            std::cout << "Result: " << result << std::endl;
+            std::cout << "Input: " << oWorkload->m_oFunctionArguments.front() << " - Result: " << result << std::endl;
 
             oWorkload->m_strResult = result;
         }
