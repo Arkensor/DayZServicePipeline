@@ -38,5 +38,4 @@ protected:
     std::map< std::string, std::map< std::string, void* > > m_oLoadedServiceFunctions;
 };
 
-
 #endif //DAYZSERVICEPIPELINE_WORKLOADPROCESSOR_HPP
